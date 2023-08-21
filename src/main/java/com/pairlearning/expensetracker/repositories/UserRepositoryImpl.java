@@ -49,7 +49,7 @@ public class UserRepositoryImpl implements UserRepository {
     public User findByEmailAndPassword(String email, String password) throws EtAuthException {
         try {
             User user = jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, new Object[]{email}, userRowMapper);
-            if(!password.equals(user.getPassword()))
+            if(!BCrypt.checkpw(password, user.getPassword()))
                 throw new EtAuthException("Invalid email and/or password.");
             return user;
         } catch(EmptyResultDataAccessException e)  {
