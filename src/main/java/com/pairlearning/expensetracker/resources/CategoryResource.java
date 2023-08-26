@@ -23,6 +23,13 @@ public class CategoryResource {
         return "Authenticated user id: " + userId;
     }
 
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<Category> getCategoryById(HttpServletRequest request, @PathVariable("categoryId") Integer categoryId) {
+        int userId = (Integer) request.getAttribute("userId");
+        Category category = categoryService.fetchCategoryById(userId, categoryId);
+        return new ResponseEntity<>(category, HttpStatus.OK);
+    }
+
     @PostMapping("")
     public ResponseEntity<Category> addCategory(HttpServletRequest request, @RequestBody Map<String, Object> categoryMap) {
         int userId = (Integer) request.getAttribute("userId");
